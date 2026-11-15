@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Monte, edite e exporte cenas 3D no navegador com o Scene Composer do Meu Acervo 3D.">
+  <title>Scene Composer — Meu Acervo 3D</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=2.22">
+  <link rel="stylesheet" href="/scene-composer-styles.css?v=2.22">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.160.0",
+      "three/addons/": "https://esm.sh/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body class="composer-body">
+  <header class="composer-header">
+    <a href="/" class="composer-brand"><span class="composer-brand-icon">◇</span><span>acervo<span>3D</span></span></a>
+    <span class="composer-title">🎬 Scene Composer</span>
+    <a href="/" class="nav-cta">← Voltar</a>
+  </header>
+
+  <main class="composer-layout">
+    <div class="composer-toolbar">
+      <div class="tb-group">
+        <button class="tb-btn active" data-mode="translate" title="Mover (W)" aria-label="Mover">✥</button>
+        <button class="tb-btn" data-mode="rotate" title="Rotacionar (E)" aria-label="Rotacionar">↻</button>
+        <button class="tb-btn" data-mode="scale" title="Escalar (R)" aria-label="Escalar">⤢</button>
+      </div>
+      <div class="tb-group">
+        <button class="tb-btn active" id="btnSnap" title="Snap (G)" aria-label="Alternar snap">⊞</button>
+        <button class="tb-btn active" id="btnGrid" title="Grid" aria-label="Alternar grade">▦</button>
+      </div>
+      <div class="tb-group">
+        <button class="tb-btn" id="btnUndo" title="Desfazer (Ctrl+Z)" aria-label="Desfazer">↶</button>
+        <button class="tb-btn" id="btnRedo" title="Refazer (Ctrl+Y)" aria-label="Refazer">↷</button>
+      </div>
+      <div class="tb-group">
+        <select id="envSelect" class="tb-select" aria-label="Ambiente de iluminação">
+          <option value="studio">Studio</option>
+          <option value="sunset">Sunset</option>
+          <option value="night">Night</option>
+          <option value="forest">Forest</option>
+          <option value="warehouse">Warehouse</option>
+          <option value="city">City</option>
+        </select>
+      </div>
+      <div class="tb-group tb-actions">
+        <button class="tb-btn tb-btn-primary" id="btnSave">💾 Salvar</button>
+        <button class="tb-btn" id="btnExportGLB" title="Exportar GLB">📦 GLB</button>
+        <button class="tb-btn" id="btnExportJSON" title="Exportar JSON">⤓ JSON</button>
+        <button class="tb-btn" id="btnImportJSON" title="Importar JSON">⤒ JSON</button>
+        <button class="tb-btn" id="btnScreenshot" title="Capturar imagem">📸</button>
+        <button class="tb-btn tb-btn-danger" id="btnClear" title="Limpar cena">🗑</button>
+      </div>
+    </div>
+
+    <aside class="composer-left">
+      <div class="panel-tabs">
+        <button class="panel-tab active" data-tab="prim">Primitivos</button>
+        <button class="panel-tab" data-tab="ph">Poly Haven</button>
+        <button class="panel-tab" data-tab="local">Local</button>
+      </div>
+      <div class="panel-body">
+        <div class="panel-content active" id="tabPrim">
+          <div class="prim-grid">
+            <button class="prim-btn" data-prim="box">📦<span>Cubo</span></button>
+            <button class="prim-btn" data-prim="sphere">⚪<span>Esfera</span></button>
+            <button class="prim-btn" data-prim="cylinder">🔵<span>Cilindro</span></button>
+            <button class="prim-btn" data-prim="cone">▲<span>Cone</span></button>
+            <button class="prim-btn" data-prim="torus">⭕<span>Torus</span></button>
+            <button class="prim-btn" data-prim="plane">▬<span>Plano</span></button>
+            <button class="prim-btn" data-prim="capsule">💊<span>Cápsula</span></button>
+            <button class="prim-btn" data-prim="icosahedron">⬡<span>Icosaedro</span></button>
+            <button class="prim-btn" data-prim="octahedron">◆<span>Octaedro</span></button>
+            <button class="prim-btn" data-prim="dodecahedron">🔶<span>Dodecaedro</span></button>
+            <button class="prim-btn" data-prim="torusknot">✱<span>Nó</span></button>
+            <button class="prim-btn" data-prim="ring">◎<span>Anel</span></button>
+          </div>
+          <section class="panel-subsection">
+            <h4>Luzes</h4>
+            <div class="prim-grid">
+              <button class="prim-btn" data-light="point">💡<span>Point</span></button>
+              <button class="prim-btn" data-light="spot">🔦<span>Spot</span></button>
+              <button class="prim-btn" data-light="directional">☀<span>Dir</span></button>
+            </div>
+          </section>
+        </div>
+
+        <div class="panel-content" id="tabPh">
+          <input type="search" class="panel-input" id="phSearch" placeholder="Buscar modelos Poly Haven…" aria-label="Buscar modelos Poly Haven">
+          <div class="panel-results" id="phResults"><p class="empty-msg">Carregue a lista…</p></div>
+        </div>
+
+        <div class="panel-content" id="tabLocal">
+          <input type="file" id="localFile" multiple accept=".glb,.gltf" hidden>
+          <button class="panel-action" id="btnPickLocal">📁 Escolher arquivo</button>
+          <div class="dropzone-mini" id="dropzoneMini" role="button" tabindex="0">
+            <div>📦</div><div>Arraste arquivos GLB/GLTF</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="composer-canvas" id="canvasWrap" aria-label="Viewport 3D">
+      <canvas id="mainCanvas"></canvas>
+      <div class="canvas-hint"><kbd>W</kbd> mover · <kbd>E</kbd> rotacionar · <kbd>R</kbd> escalar · <kbd>Del</kbd> remover · <kbd>Ctrl+Z</kbd> desfazer</div>
+      <div class="canvas-loader" id="canvasLoader" role="status" aria-live="polite">
+        <div class="spinner"></div><div id="loaderText">Carregando…</div>
+      </div>
+    </section>
+
+    <aside class="composer-right">
+      <section class="right-section">
+        <div class="right-header"><h4>Hierarquia</h4><span class="right-count" id="objCount">0 objetos</span></div>
+        <div class="hierarchy" id="hierarchy"><p class="empty-msg">Adicione objetos do painel esquerdo</p></div>
+      </section>
+      <section class="right-section right-props">
+        <div class="right-header"><h4>Propriedades</h4></div>
+        <div id="properties"><p class="empty-msg">Nenhum objeto selecionado</p></div>
+      </section>
+    </aside>
+  </main>
+
+  <input type="file" id="importJSONFile" accept="application/json" hidden>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/scene-composer.js?v=2.22"></script>
+</body>
+</html>

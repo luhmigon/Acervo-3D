@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "functions": {
+    "server.js": {
+      "includeFiles": "api/**/*"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/sobre", "destination": "/sobre.html" },
+    { "source": "/roadmap", "destination": "/roadmap.html" },
+    { "source": "/termos", "destination": "/termos.html" },
+    { "source": "/privacidade", "destination": "/privacidade.html" },
+    { "source": "/model/:id", "destination": "/model.html" },
+    { "source": "/optimize", "destination": "/optimizer.html" },
+    { "source": "/pbr-editor", "destination": "/pbr-editor.html" },
+    { "source": "/batch-optimize", "destination": "/batch-optimizer.html" },
+    { "source": "/scene-composer", "destination": "/scene-composer.html" },
+    { "source": "/blender-addon", "destination": "/blender-addon.html" },
+    { "source": "/", "destination": "/public/index.html" }
+  ]
+}

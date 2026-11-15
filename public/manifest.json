@@ -1,0 +1,14 @@
+{
+  "name": "Meu Acervo 3D",
+  "short_name": "Acervo 3D",
+  "description": "Seu espaço pessoal para descobrir e organizar modelos 3D gratuitos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0c10",
+  "theme_color": "#b4ff55",
+  "lang": "pt-BR",
+  "scope": "/",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

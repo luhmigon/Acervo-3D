@@ -1,0 +1,27 @@
+node_modules/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.production
+
+# Builds, cache e dados locais
+dist/
+build/
+.vercel/
+.cache/
+downloads/
+uploads/
+coverage/
+
+# Logs, sistema e IDE
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Arquivos de backup do projeto
+/free3dhub-personal.zip
+/free3dhub-personal-atualizado.zip
+/meu-acervo-3d-site.zip

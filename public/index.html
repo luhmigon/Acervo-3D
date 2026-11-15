@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Encontre modelos 3D, texturas, HDRIs e áudio em várias fontes, com ferramentas para criar cenas e otimizar arquivos.">
+  <title>Meu Acervo 3D — descubra modelos</title>
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Meu Acervo 3D">
+  <meta property="og:title" content="Meu Acervo 3D — catálogo e ferramentas para criar em 3D">
+  <meta property="og:description" content="Explore modelos 3D, texturas, HDRIs e áudio de várias fontes. Crie cenas, edite materiais e otimize arquivos.">
+  <meta property="og:image" content="/icon.svg">
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Meu Acervo 3D — catálogo e ferramentas para criar em 3D">
+  <meta name="twitter:description" content="Explore modelos 3D, texturas, HDRIs e áudio de várias fontes, além de ferramentas para seu fluxo 3D.">
+  <meta name="twitter:image" content="/icon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=2.27">
+  <link rel="stylesheet" href="/header-polish.css?v=1">
+  <link rel="stylesheet" href="/category-tree.css?v=2.26">
+  <link rel="stylesheet" href="/audio-styles.css?v=2.20">
+  <style>
+    .footer-links{display:flex;gap:16px}
+    .footer-links a{color:var(--muted);font-size:11px;font-weight:600}
+    .footer-links a:hover{color:var(--accent)}
+    @media(max-width:650px){.footer-links{order:2;margin-left:auto}.footer-inner>span:last-child{order:1;margin-left:auto}}
+  </style>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <script type="module" src="/app.js?v=2.26"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav shell">
+      <a class="brand" href="/" aria-label="Meu Acervo 3D - início"><span class="brand-mark">◇</span><span>acervo<span class="brand-light">3D</span></span></a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a class="nav-link active" href="#catalogo">Explorar</a>
+        <a class="nav-link" href="#acervo" aria-label="Minha biblioteca">Biblioteca</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="icon-button nav-action optimizer-shortcut" href="/optimize" title="Otimizador 3D" aria-label="Abrir otimizador 3D"><span class="nav-action-icon" aria-hidden="true">⚡</span><span class="nav-action-label">Otimizar</span></a>
+        <a class="icon-button nav-action optimizer-shortcut" href="/scene-composer" title="Scene Composer" aria-label="Abrir Scene Composer"><span class="nav-action-icon" aria-hidden="true">🎬</span><span class="nav-action-label">Composer</span></a>
+        <a class="icon-button nav-action" href="/pbr-editor" title="Editor PBR" aria-label="Abrir Editor PBR"><span class="nav-action-icon" aria-hidden="true">🎨</span><span class="nav-action-label">Materiais</span></a>
+        <a class="icon-button nav-action" href="/batch-optimize" title="Otimizador em lote" aria-label="Abrir Otimizador em lote"><span class="nav-action-icon" aria-hidden="true">▣</span><span class="nav-action-label">Em lote</span></a>
+        <button class="icon-button nav-action" id="btnFavorites" title="Favoritos" aria-label="Abrir favoritos"><span class="nav-action-icon" aria-hidden="true">♡</span><span class="nav-action-label">Favoritos</span><span class="nav-count" id="favCount">0</span></button>
+        <button class="icon-button nav-action" id="btnData" title="Backup e dados" aria-label="Backup e dados"><span class="nav-action-icon" aria-hidden="true">↥</span><span class="nav-action-label">Backup</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="layout-with-sidebar">
+      <aside class="category-sidebar" id="categorySidebar" aria-label="Categorias do acervo">
+        <div class="category-header">
+          <h2 class="category-title"><span aria-hidden="true">📂</span><span>Categorias</span></h2>
+          <button class="category-clear" id="clearCategory" type="button" title="Limpar categoria" aria-label="Limpar categoria">✕</button>
+        </div>
+        <div class="category-search-wrap">
+          <input class="category-search" id="categorySearch" type="search" placeholder="Filtrar categorias…" autocomplete="off" aria-label="Filtrar categorias">
+        </div>
+        <div class="category-actions">
+          <button class="category-action-btn" id="expandAllCategories" type="button">⊞ Expandir</button>
+          <button class="category-action-btn" id="collapseAllCategories" type="button">⊟ Recolher</button>
+        </div>
+        <div class="category-tree" id="categoryTree"></div>
+      </aside>
+      <div class="layout-content">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> UM UNIVERSO DE CRIATIVIDADE 3D</div>
+        <h1>Encontre seu<br><span>próximo modelo.</span></h1>
+        <p>Explore modelos gratuitos, guarde seus favoritos e mantenha seu acervo sempre à mão.</p>
+        <div class="hero-stats">
+          <div><strong id="statFavs">0</strong><span>favoritos</span></div>
+          <i></i>
+          <div><strong id="statDownloads">0</strong><span>já baixados</span></div>
+          <i></i>
+          <div><strong id="statNotes">0</strong><span>com notas</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="art-shape"><div class="shape-top"></div><div class="shape-side"></div><div class="shape-front"></div></div>
+        <div class="art-caption"><span class="caption-dot"></span> endless inspiration</div>
+      </div>
+    </section>
+
+    <section class="explorer" id="catalogo">
+      <div class="search-wrap">
+        <form class="search-box" id="searchForm">
+          <span class="search-symbol">⌕</span>
+          <input id="searchInput" type="search" placeholder="O que você está procurando?" autocomplete="off" aria-label="Buscar modelos 3D">
+          <button type="submit" class="search-submit">Buscar <span>↗</span></button>
+        </form>
+        <div class="search-history" id="searchHistory" hidden></div>
+      </div>
+      <div class="explorer-heading">
+        <div><div class="eyebrow muted-eyebrow">BIBLIOTECA ABERTA</div><h2 id="sectionTitle">Modelos <span>em destaque</span></h2></div>
+        <div class="results-count" id="resultsInfo">Carregando catálogo…</div>
+      </div>
+      <nav class="breadcrumb-bar" id="breadcrumb" aria-label="Caminho da categoria"></nav>
+      <div class="toolbar">
+        <div class="tabs" id="tabs" role="tablist" aria-label="Categorias">
+          <button class="tab active" data-tab="models">Modelos</button>
+          <button class="tab" data-tab="animations">Animações</button>
+          <button class="tab" data-tab="polyhaven-models">Poly Haven</button>
+          <button class="tab" data-tab="textures">Texturas</button>
+          <button class="tab" data-tab="hdris">HDRIs</button>
+          <button class="tab" data-tab="pbr">🧱 PBR Library</button>
+          <button class="tab" data-tab="magias">✨ Magias &amp; VFX</button>
+          <button class="tab" data-tab="mixamo">Mixamo</button>
+          <button class="tab" data-tab="creatures">🐉 Criaturas</button>
+          <button class="tab" data-tab="pbr-editor">🎨 Editor PBR</button>
+          <button class="tab" data-tab="batch">▣ Batch</button>
+          <button class="tab" data-tab="audio">🔊 Áudio</button>
+          <button class="tab" data-tab="humanoids">🧑 Humanoides</button>
+          <button class="tab" data-tab="scenekits">🌍 Cenários</button>
+          <button class="tab" data-tab="composer">🎬 Composer</button>
+          <button class="tab" data-tab="blender-addon">🧩 Blender</button>
+          <button class="tab" data-tab="optimizer">⚡ Otimizador</button>
+          <button class="tab" data-tab="acervo">Minha biblioteca</button>
+        </div>
+        <div class="toolbar-controls">
+          <select id="ambientCategory" aria-label="Filtrar materiais PBR por categoria" hidden>
+            <option value="">Todas as categorias PBR</option>
+            <option value="fabric">Tecidos</option>
+            <option value="ground">Terrenos</option>
+            <option value="metal">Metais</option>
+            <option value="rock">Rochas</option>
+            <option value="wood">Madeiras</option>
+            <option value="bricks">Tijolos</option>
+            <option value="concrete">Concreto</option>
+            <option value="tiles">Azulejos</option>
+            <option value="plaster">Reboco</option>
+            <option value="plastic">Plástico</option>
+            <option value="leather">Couro</option>
+            <option value="food">Alimentos</option>
+            <option value="liquid">Líquidos</option>
+            <option value="organic">Orgânicos</option>
+            <option value="paper">Papel</option>
+            <option value="road">Asfalto</option>
+            <option value="roof">Telhados</option>
+            <option value="surface">Imperfeições</option>
+            <option value="wall">Paredes</option>
+          </select>
+          <select id="sortSelect" aria-label="Ordenar modelos">
+            <option value="popular">Em destaque</option>
+            <option value="recent">Mais recentes</option>
+          </select>
+          <div class="view-toggle" aria-label="Modo de visualização">
+            <button class="view-btn active" data-view="grid" title="Grade">▦</button>
+            <button class="view-btn" data-view="list" title="Lista">☰</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="chips" id="filterChips">
+          <button class="chip active" data-q="">Tudo</button><button class="chip" data-q="furniture">Móveis</button>
+          <button class="chip" data-q="character">Personagens</button><button class="chip" data-q="vehicle">Veículos</button>
+          <button class="chip" data-q="animal">Animais</button><button class="chip" data-q="architecture">Arquitetura</button>
+          <button class="chip" data-mine="not-downloaded">Ainda não baixei</button><button class="chip" data-mine="favorites">Favoritos</button>
+        </div>
+      </div>
+      <div class="results" id="results" data-view="grid"></div>
+      <div class="load-more" id="loadMoreWrap" hidden><button class="button-secondary" id="loadMoreBtn">Carregar mais modelos</button></div>
+    </section>
+
+    <section class="library-section" id="acervo">
+      <div class="section-topline"><div><div class="eyebrow muted-eyebrow">SEU ESPAÇO PESSOAL</div><h2>Minha <span>biblioteca</span></h2></div><a href="#catalogo" class="text-link">Explorar modelos <span>↗</span></a></div>
+      <div class="results library-results" id="acervoResults" data-view="grid"></div>
+    </section>
+    <section class="history-section" id="historico"><div class="section-topline"><div><div class="eyebrow muted-eyebrow">SEU HISTÓRICO</div><h2>Downloads <span>salvos</span></h2></div><div id="historicoInfo" class="results-count">Nenhum item</div></div><div id="historicoList" class="history-list"></div></section>
+      </div>
+    </div>
+  </main>
+  <button class="category-mobile-toggle" id="categoryMobileToggle" type="button" aria-controls="categorySidebar" aria-expanded="false">📂 Categorias</button>
+  <button class="category-backdrop" id="categoryBackdrop" type="button" aria-label="Fechar categorias" hidden></button>
+
+  <footer class="site-footer"><div class="shell footer-inner"><a class="brand" href="/"><span class="brand-mark">◇</span><span>acervo<span class="brand-light">3D</span></span></a><span>Seus dados ficam neste dispositivo. Feito para quem cria.</span><nav class="footer-links" aria-label="Informações do projeto"><a href="/sobre">Sobre</a><a href="/roadmap">Roadmap</a><a href="/termos">Termos de Uso</a><a href="/privacidade">Privacidade</a></nav><span>© 2026</span></div></footer>
+
+  <aside class="drawer" id="favoritesDrawer" aria-label="Favoritos"><div class="drawer-header"><div><div class="eyebrow muted-eyebrow">SUA COLEÇÃO</div><h2>Favoritos</h2></div><button class="close-button" id="drawerClose" aria-label="Fechar">×</button></div><div class="drawer-body" id="favoritesList"></div></aside>
+  <aside class="drawer" id="dataDrawer" aria-label="Backup e dados"><div class="drawer-header"><div><div class="eyebrow muted-eyebrow">SEUS DADOS</div><h2>Backup</h2></div><button class="close-button" id="dataDrawerClose" aria-label="Fechar">×</button></div><div class="drawer-body"><p class="drawer-copy">Seu acervo é privado e armazenado apenas neste navegador. Exporte uma cópia para manter seus dados seguros.</p><button class="button-primary full-button" id="btnExportData">Exportar backup JSON</button><button class="button-secondary full-button" id="btnImportData">Importar backup</button><input id="importFile" type="file" accept="application/json" hidden><div class="danger-zone"><p>Zona de perigo</p><button class="danger-button full-button" id="btnClearAll">Apagar todos os meus dados</button></div></div></aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="modal" id="modal" aria-modal="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-panel"><div class="modal-header"><div><div class="eyebrow muted-eyebrow" id="modalTypeLabel">VISUALIZAÇÃO DO MODELO</div><h2 id="modalTitle">Modelo</h2></div><button class="close-button" id="modalClose" aria-label="Fechar">×</button></div>
+      <div class="modal-viewer" id="modalViewer"></div>
+      <div class="modal-details"><div class="modal-info" id="modalInfo"></div><div class="modal-buttons"><button class="button-secondary" id="modalSaveBtn">♡ Salvar</button><button class="button-secondary" id="modalAttributionBtn">Copiar crédito</button><a class="button-secondary" id="modalDetailLink" href="#">Detalhes</a><a class="button-primary" id="modalLink" href="#" target="_blank" rel="noopener">Ver original ↗</a></div><div class="modal-personal"><div><label>Minha avaliação</label><div id="modalRating" class="rating-stars"></div></div><div class="note-field"><label for="modalNote">Notas pessoais</label><textarea id="modalNote" placeholder="Anote algo sobre este modelo…"></textarea></div></div><div id="modalDownloadRow" hidden><a class="button-primary full-button" id="modalDownloadBtn" href="#" download>Baixar modelo GLB ↓</a></div></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

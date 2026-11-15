@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Otimize múltiplos arquivos 3D localmente no navegador.">
+  <title>Batch Optimizer — Meu Acervo 3D</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=2.18">
+  <link rel="stylesheet" href="/audio-styles.css?v=2.18">
+  <style>
+    .batch-page{width:min(1000px,calc(100% - 48px));margin:42px auto 70px}.batch-page h1{margin:0 0 7px;font:600 31px var(--display)}.batch-lead{margin:0 0 25px;color:var(--muted);font-size:12px}.batch-drop{padding:42px 18px;border:1px dashed #596347;border-radius:14px;background:var(--surface);text-align:center;cursor:pointer}.batch-drop.dragover{border-color:var(--accent);background:#b4ff550c}.batch-drop strong,.batch-drop span{display:block}.batch-drop strong{font-size:13px}.batch-drop span{margin-top:5px;color:var(--dim);font-size:10px}.batch-panel{margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}.batch-panel h2{margin:0 0 13px;font:600 16px var(--display)}.batch-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.batch-preset{padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);cursor:pointer}.batch-preset.active{border-color:var(--accent);color:var(--accent)}.batch-preset strong,.batch-preset small{display:block}.batch-preset strong{font-size:11px}.batch-preset small{margin-top:3px;color:var(--dim);font-size:9px}.batch-options{display:flex;flex-wrap:wrap;gap:15px;margin-top:14px;color:var(--muted);font-size:10px}.batch-options input{accent-color:var(--accent)}.batch-range{display:flex;align-items:center;gap:12px;margin-top:12px;color:var(--muted);font-size:10px}.batch-range input{flex:1;accent-color:var(--accent)}.batch-files{display:grid;gap:7px}.batch-file{display:flex;align-items:center;gap:12px;padding:11px;border:1px solid var(--line);border-radius:9px}.batch-file-info{flex:1;min-width:0}.batch-file-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:700}.batch-file-meta{color:var(--dim);font-size:9px}.batch-status{font-size:9px;font-weight:700}.batch-status.success{color:var(--accent)}.batch-status.error{color:#ff9ba0}.batch-actions{display:flex;gap:8px;margin-top:13px}.batch-actions>*{flex:1}.batch-summary{display:none;margin-top:18px;padding:17px;border:1px solid #3b5630;border-radius:12px;background:#b4ff550b}.batch-summary.show{display:block}.batch-summary h2{margin:0 0 11px;color:var(--accent);font:600 16px var(--display)}.batch-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.batch-stats div{padding:9px 5px;border-radius:8px;background:var(--surface);text-align:center}.batch-stats b,.batch-stats span{display:block}.batch-stats b{font-size:14px}.batch-stats span{color:var(--dim);font-size:8px;text-transform:uppercase}.batch-primary{width:100%;margin-top:12px}.batch-page button:disabled{opacity:.5;cursor:not-allowed}
+    @media(max-width:600px){.batch-page{width:calc(100% - 32px);margin-top:28px}.batch-stats{grid-template-columns:repeat(3,1fr)}.batch-file{gap:7px}.batch-actions{flex-direction:column}}
+  </style>
+  <script type="module" src="/batch-optimizer.js"></script>
+</head>
+<body>
+  <header class="site-header"><div class="nav shell"><a class="brand" href="/"><span class="brand-mark">◇</span><span>acervo<span class="brand-light">3D</span></span></a><div class="nav-actions"><a class="icon-button" href="/">← Catálogo</a></div></div></header>
+  <main class="batch-page">
+    <h1>▣ Batch Optimizer</h1>
+    <p class="batch-lead">Otimize vários GLB/GLTF de uma vez. O processamento ocorre no navegador; seus arquivos não são enviados ao servidor.</p>
+    <div id="dropzone" class="batch-drop"><input id="files" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp" multiple hidden><strong>📦 Arraste os arquivos ou clique para selecionar</strong><span>Até 100 MB por seleção. Para GLTF separado, selecione também seus .bin e texturas.</span></div>
+    <section class="batch-panel" id="config" hidden>
+      <h2>Preset de otimização</h2>
+      <div class="batch-presets"><button class="batch-preset" data-preset="light"><strong>🪶 Leve</strong><small>Sem simplificação</small></button><button class="batch-preset active" data-preset="medium"><strong>⚖️ Médio</strong><small>Equilíbrio</small></button><button class="batch-preset" data-preset="aggressive"><strong>🔥 Agressivo</strong><small>Maior redução</small></button></div>
+      <div class="batch-options"><label><input id="basic" type="checkbox" checked> Otimização básica</label><label><input id="simplify" type="checkbox"> Simplificar malha</label><label><input id="draco" type="checkbox"> Compressão Draco</label></div>
+      <label class="batch-range">Manter <b id="ratioLabel">50%</b> dos triângulos <input id="ratio" type="range" min="10" max="95" step="5" value="50"></label>
+      <label class="batch-range">Arquivos simultâneos <b id="concurrencyLabel">2</b> <input id="concurrency" type="range" min="1" max="4" value="2"></label>
+    </section>
+    <section class="batch-panel" id="queue" hidden>
+      <h2><span id="fileCount">0</span> arquivo(s) na fila</h2><div class="batch-files" id="fileList"></div>
+      <div class="batch-actions"><button class="button-secondary" id="addMore">Adicionar arquivos</button><button class="button-secondary" id="clearQueue">Limpar fila</button><button class="button-primary" id="process">⚡ Otimizar todos</button></div>
+    </section>
+    <section class="batch-summary" id="summary"><h2>Processamento concluído</h2><div class="batch-stats"><div><b id="sumTotal">0</b><span>Arquivos</span></div><div><b id="sumSuccess">0</b><span>Sucesso</span></div><div><b id="sumFailed">0</b><span>Falhas</span></div><div><b id="sumBefore">0</b><span>Antes</span></div><div><b id="sumAfter">0</b><span>Depois</span></div><div><b id="sumSaved">0%</b><span>Economia</span></div></div><button class="button-primary batch-primary" id="downloadZip">⬇ Baixar arquivos e relatório (ZIP)</button></section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/audio-bootstrap.js"></script>
+</body>
+</html>

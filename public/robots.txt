@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Bloqueia APIs de serem indexadas (evita erros no Google Search Console)
+Disallow: /api/
+
+# Sitemap (vamos criar isso em um bloco futuro)
+# Sitemap: https://seu-site.vercel.app/sitemap.xml

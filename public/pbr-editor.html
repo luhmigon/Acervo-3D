@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c10">
+  <title>Editor PBR — Meu Acervo 3D</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=2.18">
+  <link rel="stylesheet" href="/audio-styles.css?v=2.18">
+  <style>
+    body{overflow:hidden}.pbr-layout{height:calc(100vh - 74px);display:grid;grid-template-columns:minmax(0,1fr) 340px}.pbr-canvas{position:relative;min-width:0;background:#08090d}.pbr-canvas canvas{width:100%;height:100%;display:block}.pbr-toolbar{position:absolute;top:14px;left:14px;display:flex;gap:7px;flex-wrap:wrap}.pbr-toolbar button{width:36px;height:36px;border:1px solid var(--line);border-radius:8px;background:#12141add;color:var(--text);cursor:pointer}.pbr-toolbar button.active{border-color:var(--accent);color:var(--accent)}.pbr-sidebar{overflow:auto;padding:17px;background:var(--surface);border-left:1px solid var(--line)}.pbr-section{margin-bottom:20px}.pbr-section h2{margin:0 0 10px;color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase}.pbr-slots{display:grid;grid-template-columns:1fr 1fr;gap:7px}.pbr-slot{padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center;cursor:pointer}.pbr-slot.filled{border-color:var(--accent)}.pbr-slot strong,.pbr-slot small{display:block}.pbr-slot strong{font-size:10px}.pbr-slot small{margin-top:3px;color:var(--dim);font-size:9px}.pbr-row{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:10px;color:var(--muted)}.pbr-row label{min-width:78px}.pbr-row input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}.pbr-row output{width:38px;text-align:right;color:var(--accent);font-family:monospace}.pbr-sidebar select,.pbr-sidebar .pbr-text{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:11px var(--font)}.pbr-actions{display:flex;gap:7px;margin-top:8px}.pbr-actions button{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font-size:10px;cursor:pointer}.pbr-actions button:hover{border-color:var(--accent)}.pbr-preset{display:flex;align-items:center;justify-content:space-between;margin:5px 0;padding:7px;border:1px solid var(--line);border-radius:7px;font-size:10px}.pbr-preset button{border:0;background:none;color:#f68c94;cursor:pointer}.pbr-loading{position:absolute;inset:0;display:none;place-items:center;background:#08090dcc;color:var(--muted)}.pbr-loading.show{display:grid}
+    @media(max-width:850px){body{overflow:auto}.pbr-layout{height:auto;grid-template-columns:1fr}.pbr-canvas{height:56vh;min-height:320px}.pbr-sidebar{border-left:0;border-top:1px solid var(--line)}}
+  </style>
+  <script type="module" src="/pbr-editor.js"></script>
+</head>
+<body>
+  <header class="site-header"><div class="nav shell"><a class="brand" href="/"><span class="brand-mark">◇</span><span>acervo<span class="brand-light">3D</span></span></a><div class="nav-actions"><a class="icon-button" href="/">← Catálogo</a></div></div></header>
+  <main class="pbr-layout">
+    <section class="pbr-canvas"><canvas id="canvas3d"></canvas><div class="pbr-toolbar">
+      <button class="active" data-shape="sphere" title="Esfera">●</button><button data-shape="cube" title="Cubo">■</button><button data-shape="plane" title="Plano">▬</button><button data-shape="cylinder" title="Cilindro">⬭</button><button data-shape="torusknot" title="Nó toroidal">✱</button><button id="uploadModel" title="Carregar GLB">📦</button><button id="screenshot" title="Salvar imagem">📸</button><button id="rotate" class="active" title="Auto-rotação">⟳</button><button id="wireframe" title="Wireframe">▦</button>
+    </div><div class="pbr-loading" id="loading">Carregando…</div></section>
+    <aside class="pbr-sidebar">
+      <section class="pbr-section"><h2>Mapas PBR</h2><div class="pbr-slots">
+        <button class="pbr-slot" data-map="map"><strong>Albedo</strong><small>Vazio</small></button><button class="pbr-slot" data-map="normalMap"><strong>Normal</strong><small>Vazio</small></button><button class="pbr-slot" data-map="roughnessMap"><strong>Roughness</strong><small>Vazio</small></button><button class="pbr-slot" data-map="metalnessMap"><strong>Metalness</strong><small>Vazio</small></button><button class="pbr-slot" data-map="aoMap"><strong>AO</strong><small>Vazio</small></button><button class="pbr-slot" data-map="displacementMap"><strong>Displace</strong><small>Vazio</small></button>
+      </div><input id="textureUpload" type="file" accept="image/*" hidden><div class="pbr-actions"><button id="ambientcg">🌐 ambientCG ID</button><button id="clearMaps">Limpar mapas</button></div></section>
+      <section class="pbr-section"><h2>Transformação UV</h2>
+        <div class="pbr-row"><label for="tileX">Tiling X</label><input id="tileX" type="range" min=".1" max="10" step=".1" value="1"><output>1.0</output></div>
+        <div class="pbr-row"><label for="tileY">Tiling Y</label><input id="tileY" type="range" min=".1" max="10" step=".1" value="1"><output>1.0</output></div>
+        <div class="pbr-row"><label for="offX">Offset X</label><input id="offX" type="range" min="-1" max="1" step=".05" value="0"><output>0.00</output></div>
+        <div class="pbr-row"><label for="offY">Offset Y</label><input id="offY" type="range" min="-1" max="1" step=".05" value="0"><output>0.00</output></div>
+        <div class="pbr-row"><label for="rotation">Rotação</label><input id="rotation" type="range" min="0" max="360" step="1" value="0"><output>0°</output></div>
+      </section>
+      <section class="pbr-section"><h2>Material</h2>
+        <div class="pbr-row"><label for="roughness">Roughness</label><input id="roughness" type="range" min="0" max="1" step=".01" value=".5"><output>0.50</output></div>
+        <div class="pbr-row"><label for="metalness">Metalness</label><input id="metalness" type="range" min="0" max="1" step=".01" value="0"><output>0.00</output></div>
+        <div class="pbr-row"><label for="normalScale">Normal scale</label><input id="normalScale" type="range" min="0" max="3" step=".05" value="1"><output>1.00</output></div>
+        <div class="pbr-row"><label for="displaceScale">Displace</label><input id="displaceScale" type="range" min="0" max="1" step=".01" value="0"><output>0.00</output></div>
+        <div class="pbr-row"><label for="aoIntensity">AO intensity</label><input id="aoIntensity" type="range" min="0" max="2" step=".05" value="1"><output>1.00</output></div>
+      </section>
+      <section class="pbr-section"><h2>Ambiente e exposição</h2>
+        <select id="env"><option value="studio">Studio</option><option value="sunset">Sunset</option><option value="night">Night</option><option value="forest">Forest</option><option value="city">City</option><option value="warehouse">Warehouse</option></select>
+        <select id="background" style="margin-top:7px"><option value="dark">Fundo escuro</option><option value="gradient">Gradiente</option><option value="checker">Xadrez</option></select>
+        <div class="pbr-row"><label for="envIntensity">Intensidade</label><input id="envIntensity" type="range" min="0" max="3" step=".05" value="1"><output>1.00</output></div>
+        <div class="pbr-row"><label for="exposure">Exposição</label><input id="exposure" type="range" min=".1" max="3" step=".05" value="1"><output>1.00</output></div>
+      </section>
+      <section class="pbr-section"><h2>Presets</h2><div id="presets"></div><div class="pbr-actions"><button id="savePreset">Salvar preset</button><button id="exportPreset">Exportar</button><button id="importPreset">Importar</button></div><input id="presetFile" type="file" accept="application/json" hidden></section>
+    </aside>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/audio-bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c10">
+  <meta name="description" content="Instale o add-on gratuito do Free3D Hub para pesquisar e importar modelos no Blender.">
+  <title>Free3D Hub para Blender</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css?v=2.25">
+  <link rel="stylesheet" href="/audio-styles.css?v=2.25">
+  <style>
+    .blender-page{width:min(980px,calc(100% - 40px));margin:46px auto 72px}
+    .blender-hero{padding:34px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,#b4ff5512,#a88cff0c),var(--surface)}
+    .blender-hero h1{max-width:720px;margin:9px 0 12px;font:600 clamp(28px,5vw,46px)/1.08 var(--display)}
+    .blender-hero p{max-width:720px;color:var(--muted);font-size:14px;line-height:1.7}
+    .blender-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .blender-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .blender-badges span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:10px}
+    .blender-section{margin-top:30px}
+    .blender-section h2{margin-bottom:13px;font:600 20px var(--display)}
+    .blender-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .blender-step{padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+    .blender-step b{display:block;margin-bottom:7px;font-size:13px}
+    .blender-step p,.blender-note{margin:0;color:var(--muted);font-size:11px;line-height:1.7}
+    .blender-note{margin-top:14px;padding:14px 16px;border-left:3px solid var(--accent);border-radius:8px;background:#b4ff550b}
+    .blender-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .blender-feature{padding:15px;border:1px solid var(--line);border-radius:11px;color:var(--muted);font-size:11px;line-height:1.6}
+    .blender-feature strong{display:block;margin-bottom:5px;color:var(--text);font-size:12px}
+    @media(max-width:620px){.blender-page{width:calc(100% - 28px);margin-top:25px}.blender-hero{padding:22px}.blender-steps,.blender-features{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav shell">
+      <a class="brand" href="/" aria-label="Meu Acervo 3D - início"><span class="brand-mark">◇</span><span>acervo<span class="brand-light">3D</span></span></a>
+      <div class="nav-actions"><a class="icon-button" href="/">← Catálogo</a></div>
+    </div>
+  </header>
+  <main class="blender-page">
+    <section class="blender-hero">
+      <div class="eyebrow muted-eyebrow">INTEGRAÇÃO COM BLENDER</div>
+      <h1>Seu acervo 3D, direto no Blender.</h1>
+      <p>Pesquise modelos do Free3D Hub no painel lateral do Blender. Importe modelos CC0 do Poly Haven e abra páginas do Sketchfab para baixar modelos que exigem login.</p>
+      <div class="blender-actions">
+        <a class="button-primary" href="/free3dhub_blender.py" download>Baixar add-on Python</a>
+        <a class="button-secondary" href="/#catalogo">Explorar o catálogo</a>
+      </div>
+      <div class="blender-badges"><span>Blender 3.0 ou superior</span><span>Arquivo único · sem dependências extras</span><span>Busca online</span></div>
+    </section>
+
+    <section class="blender-section">
+      <h2>Instale em poucos passos</h2>
+      <div class="blender-steps">
+        <article class="blender-step"><b>1. Baixe o arquivo</b><p>Use o botão acima e salve <code>free3dhub_blender.py</code> no computador.</p></article>
+        <article class="blender-step"><b>2. Instale no Blender</b><p>Abra Editar → Preferências e use “Install...” ou “Install from Disk” na área de Add-ons/Extensions. Selecione o arquivo e ative o add-on Free3D Hub. O rótulo pode variar entre versões do Blender.</p></article>
+        <article class="blender-step"><b>3. Abra o painel</b><p>No 3D Viewport, pressione <kbd>N</kbd> e escolha a aba <strong>Free3D</strong>.</p></article>
+        <article class="blender-step"><b>4. Conecte e pesquise</b><p>Em “Conexão e cache”, configure a API URL, escolha uma fonte, digite sua busca e clique em Buscar.</p></article>
+      </div>
+      <p class="blender-note"><strong>URL local:</strong> use o endereço mostrado no terminal ao iniciar o site. Normalmente é <code>http://localhost:3000</code>; se essa porta estiver ocupada, o iniciador do Windows escolhe outra. O Blender precisa apontar para a porta ativa. Para um servidor em outro computador, use o endereço acessível desse servidor, não <code>localhost</code>.</p>
+    </section>
+
+    <section class="blender-section">
+      <h2>O que o add-on faz</h2>
+      <div class="blender-features">
+        <div class="blender-feature"><strong>Pesquisar</strong>Sketchfab, Poly Haven, humanoides, criaturas e modelos para cenários.</div>
+        <div class="blender-feature"><strong>Importar</strong>Modelos glTF do Poly Haven são importados diretamente à cena, com escala e centralização configuráveis.</div>
+        <div class="blender-feature"><strong>Abrir e baixar</strong>Sketchfab exige autenticação para download direto; o add-on abre a página original no navegador.</div>
+      </div>
+      <p class="blender-note">A busca e os downloads exigem conexão com a internet e o servidor do Free3D Hub em execução. Os modelos e miniaturas em cache ficam no computador. Confira a licença e as condições de uso na página de origem antes de publicar ou redistribuir um modelo.</p>
+    </section>
+  </main>
+</body>
+</html>

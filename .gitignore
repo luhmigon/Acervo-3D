@@ -1,0 +1,40 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente (NUNCA subir)
+.env
+.env.local
+.env.production
+
+# Build / cache
+dist/
+build/
+.vercel/
+.cache/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Downloads locais
+downloads/
+uploads/
+
+# Arquivos de backup do projeto
+/free3dhub-personal.zip
+/free3dhub-personal-atualizado.zip
+/meu-acervo-3d-site.zip
+
+# Coverage / testes
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
