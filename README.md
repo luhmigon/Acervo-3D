@@ -1,5 +1,7 @@
 # Meu Acervo 3D
 
+[Português](README.md) | [English](README.en.md)
+
 **Um catálogo para descobrir modelos 3D, texturas, HDRIs, animações e sons, com ferramentas integradas para criação.**
 
 [![Deploy na Vercel](https://img.shields.io/badge/deploy-Vercel-black)](https://vercel.com)
